@@ -1,8 +1,9 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { CreateMascotaDto } from './dto/create-mascota.dto';
+
 import { User } from './schema/user.schema';
+import { LoginUserDto } from './dto/login-user.dto';
 
 
 @Controller('users')
@@ -15,9 +16,9 @@ export class UsersController {
         return this.usersService.create(newUser);
     }
 
-    @Get('agregarmascota/:id')
-    postMascota(@Param('id') id: string, @Body() newMascota: CreateMascotaDto){
-        
+    @Post('login')
+    postMascota(@Body() login: LoginUserDto){
+        return this.usersService.login(login);
     }
    
 }

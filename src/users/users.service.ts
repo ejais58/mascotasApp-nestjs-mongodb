@@ -1,17 +1,14 @@
-import { HttpException, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { User, UsersDocument } from './schema/user.schema';
+import { Injectable, HttpException } from '@nestjs/common';
+import { User } from './schema/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as argon2 from 'argon2';
-import { CreateMascotaDto } from './dto/create-mascota.dto';
-import { Mascota } from '../mascota/schema/mascota.schema';
-import { from } from 'rxjs';
 import { UserDao } from '../database/dao/user.dao';
+import { LoginUserDto } from './dto/login-user.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
-    constructor(private readonly userDao: UserDao) {}
+    constructor(private readonly userDao: UserDao, private jwtService: JwtService) {}
 
   async create(user: CreateUserDto): Promise<User> {
 
@@ -24,8 +21,27 @@ export class UsersService {
     return this.userDao.createUser(user)
   }
 
-  async addMascotaByUser(id: string, mascota: CreateMascotaDto){
-    
+  async login(user: LoginUserDto){
+    const { Email_Usuario, Pass_Usuario} = user;
+
+        /*Busco si existe en la base de datos el nombre ingresado en el cliente, 
+        y hasheo la contraseña ingresada para comparar con la contraseña de la base de datos*/
+        const findUser = await this.userDao.findUsers(Email_Usuario)
+        if (!findUser){
+            throw new HttpException('USER NOT FOUND', 404);
+        }
+
+        //Validar contraseñas (base de datos y la ingresada por el cliente)
+        const validar = await argon2.verify(findUser.Pass_Usuario, Pass_Usuario)
+        if (!validar){
+            throw new HttpException('PASSWORD INVALID', 403);
+        } 
+
+        //generar jwt
+        const payload = {id: findUser._id, nombre: findUser.Nombre_Usuario, roll: findUser.Rol_Usuario}
+        const token = this.jwtService.sign(payload)
+        const data = {token, payload}
+        return data;
   }
 
   
