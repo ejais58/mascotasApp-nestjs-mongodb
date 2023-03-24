@@ -8,7 +8,7 @@ import { UserDao } from '../database/dao/user.dao';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-    imports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema },{name: Mascota.name, schema: MascotaSchema}]),
+    imports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     JwtModule.register({
         secret: 'jwtConstants.secret',
         signOptions: { expiresIn: '1h' },
