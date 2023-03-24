@@ -26,7 +26,7 @@ export class UsersService {
 
         /*Busco si existe en la base de datos el nombre ingresado en el cliente, 
         y hasheo la contraseña ingresada para comparar con la contraseña de la base de datos*/
-        const findUser = await this.userDao.findUsers(Email_Usuario)
+        const findUser = await this.userDao.findUsers(Email_Usuario);
         if (!findUser){
             throw new HttpException('USER NOT FOUND', 404);
         }
@@ -38,7 +38,7 @@ export class UsersService {
         } 
 
         //generar jwt
-        const payload = {id: findUser._id, nombre: findUser.Nombre_Usuario, roll: findUser.Rol_Usuario}
+        const payload = {id: findUser._id, nombre: findUser.Nombre_Usuario, rol: findUser.Rol_Usuario}
         const token = this.jwtService.sign(payload)
         const data = {token, payload}
         return data;
