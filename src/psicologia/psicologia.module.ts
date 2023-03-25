@@ -6,10 +6,15 @@ import { MascotaDao } from '../database/dao/mascota.dao';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from '../users/schema/user.schema';
 import { Mascota, MascotaSchema } from '../mascota/schema/mascota.schema';
+import { Turno, TurnoSchema } from './schema/turno.schema';
+import { TurnoDao } from '../database/dao/turno.dao';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema },{name: Mascota.name, schema: MascotaSchema}])],
+  imports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema },
+                                       { name: Mascota.name, schema: MascotaSchema },
+                                       { name: Turno.name, schema: TurnoSchema }]
+  )],
   controllers: [PsicologiaController],
-  providers: [PsicologiaService, UserDao, MascotaDao]
+  providers: [PsicologiaService, UserDao, MascotaDao, TurnoDao]
 })
 export class PsicologiaModule {}

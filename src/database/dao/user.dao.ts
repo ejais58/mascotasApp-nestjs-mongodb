@@ -1,8 +1,11 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UsersDocument } from '../../users/schema/user.schema';
-import { Model } from 'mongoose';
+import { isValidObjectId, Model, Types } from 'mongoose';
 import { CreateUserDto } from '../../users/dto/create-user.dto';
+import mongoose from 'mongoose';
+import { ObjectId } from 'bson';
+
 
 
 @Injectable()
@@ -25,6 +28,11 @@ export class UserDao {
   async findPsicologo(){
     return this.userModel.find({Rol_Usuario: 'psicologo'}).select('Nombre_Usuario Apellido_Usuario Email_Usuario');
   }
+
+  async findPsicologoById(id: string){
+    const findPsicologo = await this.userModel.findOne({_id: id});
+    return findPsicologo;
+}
 
   
 }

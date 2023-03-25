@@ -15,6 +15,12 @@ export class MascotaDao{
         return newMascota.save();
     }
 
+    //Buscar tipo de mascota
+    async findMascotaById(id: string){
+        const findMascota = await this.mascotaModel.findOne({_id: id})
+        return findMascota;
+    }
+
     //Info mascotas
     async allMascotas(){
         return this.mascotaModel.find().populate({ path: 'Id_Usuario', model: 'User', select: 'Nombre_Usuario Apellido_Usuario' }).sort({'Id_Usuario': 1});
