@@ -19,17 +19,17 @@ export class UserDao {
   }
 
   //Buscar usuario
-  async findUsers(email: string){
+  async findUsers(email: string): Promise<User>{
     const findUser = await this.userModel.findOne({Email_Usuario : email}).exec();
     return findUser;
   }
 
   //Buscar todos los psicologos
-  async findPsicologo(){
+  async findPsicologo(): Promise<User[]>{
     return this.userModel.find({Rol_Usuario: 'psicologo'}).select('Nombre_Usuario Apellido_Usuario Email_Usuario');
   }
 
-  async findPsicologoById(id: string){
+  async findPsicologoById(id: string): Promise<User>{
     const findPsicologo = await this.userModel.findOne({_id: id});
     return findPsicologo;
 }

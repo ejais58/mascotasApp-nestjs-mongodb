@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from '@nestjs/mongoose';
 import { Turno, TurnoDocument } from '../../psicologia/schema/turno.schema';
 import { Model } from 'mongoose';
+import { RegistrarTurnoDto } from '../../psicologia/dto/registrar-turno.dto';
 
 
 
@@ -31,5 +32,10 @@ export class TurnoDao{
         ]});
 
         return turnos;
+    }
+
+    async registrarTurno(turno: RegistrarTurnoDto){
+        const newUser = new this.turnoModel(turno);
+        return newUser.save();
     }
 }

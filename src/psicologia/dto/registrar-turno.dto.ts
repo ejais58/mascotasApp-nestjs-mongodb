@@ -10,6 +10,8 @@ export class RegistrarTurnoDto{
     @IsNotEmpty()
     Fecha_Inicio_Turno: Date
 
+    Fecha_Fin_Turno: Date
+
     @IsNotEmpty()
     Id_Mascota_Turno: string
 }

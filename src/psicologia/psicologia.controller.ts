@@ -1,6 +1,7 @@
 import { Body, Controller, Get} from '@nestjs/common';
 import { PsicologiaService } from './psicologia.service';
 import { BuscarTurnoDto } from './dto/registrar-turno.dto';
+import { Turno } from './schema/turno.schema';
 
 @Controller('psicologia')
 export class PsicologiaController {

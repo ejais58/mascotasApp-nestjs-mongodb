@@ -2,7 +2,7 @@ import { Injectable, HttpException } from '@nestjs/common';
 import { UserDao } from '../database/dao/user.dao';
 import { MascotaDao } from '../database/dao/mascota.dao';
 import { TurnoDao } from '../database/dao/turno.dao';
-import { BuscarTurnoDto } from './dto/registrar-turno.dto';
+import { BuscarTurnoDto, RegistrarTurnoDto } from './dto/registrar-turno.dto';
 
 
 @Injectable()
@@ -75,5 +75,59 @@ export class PsicologiaService {
             return {turnos_gatos: arrayTurnosDisponiblesGato}
         }
         
+    }
+
+    async registrarTurno(newRegistro: RegistrarTurnoDto, payloadId: string){
+        let {Id_Psicologo_Turno, Id_Mascota_Turno, Fecha_Inicio_Turno} = newRegistro
+        
+
+        //buscamos si es psicologo
+        const findPsicologo = await this.userDao.findPsicologoById(Id_Psicologo_Turno);
+        if (findPsicologo.Rol_Usuario !== 'psicologo'){
+            throw new HttpException('PSICOLOGO NOT FOUND', 404);
+        }
+
+        //buscamos si es su dueño
+        const findDuenio = await this.mascotaDao.findMascotaByDuenio(Id_Mascota_Turno, payloadId)
+        if(!findDuenio){
+            throw new HttpException('No es su dueño', 404);
+        }
+
+        const findMascota = await this.mascotaDao.findMascotaById(Id_Mascota_Turno)
+            if (findMascota.Tipo_Mascota === 'Perro'){
+
+                const fechaInicio = new Date(Fecha_Inicio_Turno);
+                const fechaFin = new Date(fechaInicio.getTime() + 30 * 60000);
+                newRegistro.Fecha_Fin_Turno = fechaFin;
+                    //guardar turno
+                const turnoDisponible = await this.turnoDao.turnosDisponibles(fechaInicio, fechaFin);
+                    if (turnoDisponible.length === 0){
+                        //guardarturno
+                        //return this.turnoDao.registrarTurno(newRegistro);
+                    }
+                    else 
+                    {
+                        throw new HttpException('No hay turno disponible para esa hora', 403);
+                    }
+                    
+            } else if (findMascota.Tipo_Mascota === 'Gato'){
+
+                const fechaInicio = new Date(Fecha_Inicio_Turno);
+                const fechaFin = new Date(fechaInicio.getTime() + 45 * 60000);
+                newRegistro.Fecha_Fin_Turno = fechaFin;
+                    //guardar turno
+                const turnoDisponible = await this.turnoDao.turnosDisponibles(fechaInicio, fechaFin);
+                    if (turnoDisponible.length === 0){
+                        //guardarturno
+                        //return this.turnoDao.registrarTurno(newRegistro);
+                    }
+                    else 
+                    {
+                        throw new HttpException('No hay turno disponible para esa hora', 403);
+                    }
+                    
+            } else {
+                    throw new HttpException('La mascota no es un perro o un gato', 403);
+            }
     }
 }
