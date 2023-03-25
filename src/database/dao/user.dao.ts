@@ -20,4 +20,11 @@ export class UserDao {
     const findUser = await this.userModel.findOne({Email_Usuario : email}).exec();
     return findUser;
   }
+
+  //Buscar todos los psicologos
+  async findPsicologo(){
+    return this.userModel.find({Rol_Usuario: 'psicologo'}).select('Nombre_Usuario Apellido_Usuario Email_Usuario');
+  }
+
+  
 }

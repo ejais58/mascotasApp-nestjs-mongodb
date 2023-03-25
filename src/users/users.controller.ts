@@ -20,5 +20,4 @@ export class UsersController {
     postMascota(@Body() login: LoginUserDto){
         return this.usersService.login(login);
     }
-   
 }
