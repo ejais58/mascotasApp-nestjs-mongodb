@@ -11,8 +11,8 @@ export class TurnoDao{
     constructor(@InjectModel(Turno.name) private turnoModel: Model<TurnoDocument>) {}
 
     //turnosDisponibles
-    async turnosDisponibles(fechaInicio: Date, fechaFin: Date): Promise<Turno[]>{
-        const turnos = await this.turnoModel.find({$or:[
+    async turnosDisponibles(idPsicologo: string,fechaInicio: Date, fechaFin: Date): Promise<Turno[]>{
+        const turnos = await this.turnoModel.find({Id_Psicologo_Turno: idPsicologo ,$or:[
                                                         {
                                                             Fecha_Inicio_Turno: {
                                                                 $lte: fechaInicio
@@ -37,5 +37,24 @@ export class TurnoDao{
     async registrarTurno(turno: RegistrarTurnoDto){
         const newUser = new this.turnoModel(turno);
         return newUser.save();
+    }
+
+    //turnosMascotas
+    async turnosMascotas(idCliente: string){
+        return this.turnoModel
+        .find({Estado_Turno: 'Pendiente'})
+        .populate({
+            path: 'Id_Mascota_Turno',
+            model: 'Mascota',
+            select: 'Nombre_Mascota Tipo_Mascota',
+            match: {Id_Usuario: idCliente},
+            populate: {
+                path: 'Id_Usuario',
+                model: 'User',
+                select: 'Nombre_Usuario Apellido_Usuario'
+            }
+        }).then(turnos => turnos.filter(turno => turno.Id_Mascota_Turno !== null));
+
+        
     }
 }

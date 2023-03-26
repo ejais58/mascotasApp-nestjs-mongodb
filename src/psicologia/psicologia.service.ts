@@ -52,7 +52,7 @@ export class PsicologiaService {
                 const tiempoFinPerro = new Date(siguienteTurno.getTime() + 30 * 60000)
                 
                 //mostrar turnos de ese dia para perros
-                const turnoDisponible = await this.turnoDao.turnosDisponibles(siguienteTurno, tiempoFinPerro);
+                const turnoDisponible = await this.turnoDao.turnosDisponibles(Id_Psicologo_Turno,siguienteTurno, tiempoFinPerro);
                 if (turnoDisponible.length === 0){
                     arrayTurnosDisponiblesPerro.push(new Date(siguienteTurno).toLocaleString())
                 }
@@ -64,7 +64,7 @@ export class PsicologiaService {
             while (siguienteTurno <= fechaHoraFin) {
                 const tiempoFinGato = new Date(siguienteTurno.getTime() + 45 * 60000)
                 //mostrar turnos de ese dia para perros
-                const turnoDisponible = await this.turnoDao.turnosDisponibles(siguienteTurno, tiempoFinGato);
+                const turnoDisponible = await this.turnoDao.turnosDisponibles(Id_Psicologo_Turno,siguienteTurno, tiempoFinGato);
 
                 if (turnoDisponible.length === 0){
                     arrayTurnosDisponiblesGato.push(new Date(siguienteTurno).toLocaleString())
@@ -76,6 +76,7 @@ export class PsicologiaService {
         
     }
 
+    //registrarTurno
     async registrarTurno(newRegistro: RegistrarTurnoDto){
         let {Id_Psicologo_Turno, Id_Mascota_Turno, Fecha_Inicio_Turno} = newRegistro
         
@@ -102,10 +103,11 @@ export class PsicologiaService {
             const fechaFin = new Date(fechaInicio.getTime() + 30 * 60000);
             newRegistro.Fecha_Fin_Turno = fechaFin;
             //guardar turno
-            const turnoDisponible = await this.turnoDao.turnosDisponibles(fechaInicio, fechaFin);
+            const turnoDisponible = await this.turnoDao.turnosDisponibles(Id_Psicologo_Turno,fechaInicio, fechaFin);
             
                 if (turnoDisponible.length === 0){
                     //guardarturno
+                    newRegistro.Estado_Turno = "Pendiente";
                     return this.turnoDao.registrarTurno(newRegistro);
                 }
                 else 
@@ -119,9 +121,10 @@ export class PsicologiaService {
             const fechaFin = new Date(fechaInicio.getTime() + 45 * 60000);
             newRegistro.Fecha_Fin_Turno = fechaFin;
             //guardar turno
-            const turnoDisponible = await this.turnoDao.turnosDisponibles(fechaInicio, fechaFin);
+            const turnoDisponible = await this.turnoDao.turnosDisponibles(Id_Psicologo_Turno,fechaInicio, fechaFin);
                 if (turnoDisponible.length === 0){
                     //guardarturno
+                    newRegistro.Estado_Turno = "Pendiente";
                     return this.turnoDao.registrarTurno(newRegistro);
                 }
                 else 
@@ -132,5 +135,9 @@ export class PsicologiaService {
         } else {
                 throw new HttpException('La mascota no es un perro o un gato', 403);
         }
+    }
+
+    async misTurnos(id: string){
+        return this.turnoDao.turnosMascotas(id);
     }
 }

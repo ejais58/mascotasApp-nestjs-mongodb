@@ -26,9 +26,5 @@ export class MascotaDao{
         return this.mascotaModel.find().populate({ path: 'Id_Usuario', model: 'User', select: 'Nombre_Usuario Apellido_Usuario' }).sort({'Id_Usuario': 1});
     }
 
-    //buscar mascota por el dueño
-    async findMascotaByDuenio(idMascota: string, payloadId: string): Promise<Mascota>{
-        const findDuenio = await this.mascotaModel.findOne({_id: idMascota ,Id_Usuario: payloadId});
-        return findDuenio;
-    }
+    
 }

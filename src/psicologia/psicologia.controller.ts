@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param } from '@nestjs/common';
 import { PsicologiaService } from './psicologia.service';
 import { BuscarTurnoDto, RegistrarTurnoDto } from './dto/registrar-turno.dto';
 
@@ -21,5 +21,11 @@ export class PsicologiaController {
     async registrarTurno(@Body() registro: RegistrarTurnoDto){
         return this.psicologiaService.registrarTurno(registro);
     }
+
+    @Get('misturnos/:id')
+    async verMisTurnos(@Param('id') id: string){
+        return this.psicologiaService.misTurnos(id);
+    }
+
 
 }

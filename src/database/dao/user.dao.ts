@@ -20,7 +20,7 @@ export class UserDao {
 
   //Buscar usuario
   async findUsers(email: string){
-    const findUser = await this.userModel.findOne({Email_Usuario : email}).exec();
+    const findUser = await this.userModel.findOne({Email_Usuario : email});
     return findUser;
   }
 

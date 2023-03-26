@@ -14,6 +14,9 @@ export class RegistrarTurnoDto{
 
     @IsNotEmpty()
     Id_Mascota_Turno: string
+
+    
+    Estado_Turno: string
 }
 
 export class BuscarTurnoDto{
@@ -25,4 +28,7 @@ export class BuscarTurnoDto{
 
     @IsNotEmpty()
     Id_Mascota_Turno: string
+
+    
+    Estado_Turno: string
 }
