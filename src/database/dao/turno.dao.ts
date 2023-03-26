@@ -12,7 +12,7 @@ export class TurnoDao{
 
     //turnosDisponibles
     async turnosDisponibles(fechaInicio: Date, fechaFin: Date): Promise<Turno[]>{
-        const turnos = await this.turnoModel.find({$and:[
+        const turnos = await this.turnoModel.find({$or:[
                                                         {
                                                             Fecha_Inicio_Turno: {
                                                                 $lte: fechaInicio

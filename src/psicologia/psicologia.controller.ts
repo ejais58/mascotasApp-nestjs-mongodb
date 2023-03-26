@@ -1,7 +1,7 @@
-import { Body, Controller, Get} from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { PsicologiaService } from './psicologia.service';
-import { BuscarTurnoDto } from './dto/registrar-turno.dto';
-import { Turno } from './schema/turno.schema';
+import { BuscarTurnoDto, RegistrarTurnoDto } from './dto/registrar-turno.dto';
+
 
 @Controller('psicologia')
 export class PsicologiaController {
@@ -15,6 +15,11 @@ export class PsicologiaController {
     @Get('turnos')
     async verTurnos(@Body() registro: BuscarTurnoDto){
         return this.psicologiaService.verTurnosDisponibles(registro);
+    }
+
+    @Post('register')
+    async registrarTurno(@Body() registro: RegistrarTurnoDto){
+        return this.psicologiaService.registrarTurno(registro);
     }
 
 }
