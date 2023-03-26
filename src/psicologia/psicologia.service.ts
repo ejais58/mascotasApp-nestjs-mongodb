@@ -3,13 +3,16 @@ import { UserDao } from '../database/dao/user.dao';
 import { MascotaDao } from '../database/dao/mascota.dao';
 import { TurnoDao } from '../database/dao/turno.dao';
 import { BuscarTurnoDto, RegistrarTurnoDto } from './dto/registrar-turno.dto';
+import { HistoriaDao } from '../database/dao/historiaclinica.dao';
+import { CreateHistoriaDto } from './dto/create-historia.dto';
 
 
 @Injectable()
 export class PsicologiaService {
     constructor(private readonly userDao: UserDao,
                 private readonly mascotaDao: MascotaDao,
-                private readonly turnoDao: TurnoDao){}
+                private readonly turnoDao: TurnoDao,
+                private readonly historiaDao: HistoriaDao){}
 
     //verPsicologo
     async allPsicologos(){
@@ -137,7 +140,39 @@ export class PsicologiaService {
         }
     }
 
+    //verMisTurnos
     async misTurnos(id: string){
         return this.turnoDao.turnosMascotas(id);
+    }
+
+    //cancelarCita
+    async cancelarCita(id: string){
+        await this.turnoDao.cancelarTurno(id);
+        return 'Turno cancelado';
+    }
+
+    //verInfoMascotas
+    async infoDeMascota(id: string){
+        return this.historiaDao.historiaMascota(id);
+    }
+
+    //TerminarCita
+    async terminarCita(historia: CreateHistoriaDto){
+        const {Id_Historia, Id_Mascota_Historia} = historia
+        const findEstadoCita = await this.turnoDao.estadoTurno(Id_Historia);
+        console.log(findEstadoCita)
+
+        if (!findEstadoCita){
+            throw new HttpException('Forbidden - estado de mascota incorrecto', 403);
+        }
+        
+        
+        //actualizar estado de turno a terminado
+        await this.turnoDao.finalizarTurno(Id_Historia);
+        
+        //cargar resultados a historia clinica
+        const fechaHoy = new Date();
+        historia.Fecha_Historia = fechaHoy;
+        return this.historiaDao.crearHistoria(historia);
     }
 }

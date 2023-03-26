@@ -11,8 +11,4 @@ export class MascotaController {
         return this.mascotaService.create(mascota);
     }
 
-    @Get('all')
-    async getMascotas(){
-        return this.mascotaService.getAll();
-    }
 }

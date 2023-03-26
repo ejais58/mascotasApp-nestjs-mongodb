@@ -40,7 +40,7 @@ export class TurnoDao{
     }
 
     //turnosMascotas
-    async turnosMascotas(idCliente: string){
+    async turnosMascotas(idCliente: string): Promise<Turno[]> {
         return this.turnoModel
         .find({Estado_Turno: 'Pendiente'})
         .populate({
@@ -56,5 +56,21 @@ export class TurnoDao{
         }).then(turnos => turnos.filter(turno => turno.Id_Mascota_Turno !== null));
 
         
+    }
+
+    //cancelarTurno
+    async cancelarTurno(id: string){
+        await this.turnoModel.findOneAndUpdate({_id: id},{ Estado_Turno: 'Cancelado'});
+    }
+
+    //terminarTurno
+    async finalizarTurno(id: string){
+        await this.turnoModel.findOneAndUpdate({_id: id},{ Estado_Turno: 'Finalizado'});
+    }
+
+    //estadoDeTurno
+    async estadoTurno(id: string){
+        const estado = await this.turnoModel.find({_id: id, Estado_Turno: 'Pendiente'})
+        return estado;
     }
 }

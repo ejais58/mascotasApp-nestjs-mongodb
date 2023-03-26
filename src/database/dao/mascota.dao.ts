@@ -22,8 +22,10 @@ export class MascotaDao{
     }
 
     //Info mascotas
-    async allMascotas(): Promise<Mascota[]>{
-        return this.mascotaModel.find().populate({ path: 'Id_Usuario', model: 'User', select: 'Nombre_Usuario Apellido_Usuario' }).sort({'Id_Usuario': 1});
+    async infoMascotas(id: string): Promise<Mascota[]>{
+        return this.mascotaModel.find({_id: id})
+            .populate({ path: 'Id_Usuario', model: 'User', select: 'Nombre_Usuario Apellido_Usuario' }).sort({'Id_Usuario': 1})
+            .populate({ path: 'Id_Mascota_Historia', model: 'Historiaclinica', select: 'Fecha_Historia Evaluacion_Historia' });
     }
 
     

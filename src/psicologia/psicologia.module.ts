@@ -8,13 +8,16 @@ import { User, UserSchema } from '../users/schema/user.schema';
 import { Mascota, MascotaSchema } from '../mascota/schema/mascota.schema';
 import { Turno, TurnoSchema } from './schema/turno.schema';
 import { TurnoDao } from '../database/dao/turno.dao';
+import { Historiaclinica, HistoriaSchema } from './schema/historia-clinica.schema';
+import { HistoriaDao } from '../database/dao/historiaclinica.dao';
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema },
                                        { name: Mascota.name, schema: MascotaSchema },
-                                       { name: Turno.name, schema: TurnoSchema }]
+                                       { name: Turno.name, schema: TurnoSchema },
+                                       { name: Historiaclinica.name, schema: HistoriaSchema }]
   )],
   controllers: [PsicologiaController],
-  providers: [PsicologiaService, UserDao, MascotaDao, TurnoDao]
+  providers: [PsicologiaService, UserDao, MascotaDao, TurnoDao, HistoriaDao]
 })
 export class PsicologiaModule {}

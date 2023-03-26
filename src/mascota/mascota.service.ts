@@ -10,7 +10,5 @@ export class MascotaService {
         return this.mascotaDao.createMascota(mascota);
     }
 
-    async getAll(){
-        return this.mascotaDao.allMascotas();
-    }
+    
 }

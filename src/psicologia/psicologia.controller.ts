@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Post, Param } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, Patch } from '@nestjs/common';
 import { PsicologiaService } from './psicologia.service';
 import { BuscarTurnoDto, RegistrarTurnoDto } from './dto/registrar-turno.dto';
+import { CreateHistoriaDto } from './dto/create-historia.dto';
 
 
 @Controller('psicologia')
@@ -25,6 +26,21 @@ export class PsicologiaController {
     @Get('misturnos/:id')
     async verMisTurnos(@Param('id') id: string){
         return this.psicologiaService.misTurnos(id);
+    }
+
+    @Patch('cancelarcita/:id')
+    async cancelarCita(@Param('id') id: string){
+        return this.psicologiaService.cancelarCita(id);
+    }
+
+    @Get('infomascota/:id')
+    async verInfoMascota(@Param('id') id: string){
+        return this.psicologiaService.infoDeMascota(id);
+    }
+
+    @Post('terminarcita')
+    async terminarCita(@Body() createHistoria: CreateHistoriaDto){
+        return this.psicologiaService.terminarCita(createHistoria)
     }
 
 
