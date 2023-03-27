@@ -10,8 +10,17 @@ export class HistoriaDao{
 
     //infoMascota
     async historiaMascota(id: string){
-        return this.historiaModel.find()
-            .populate({ path: 'Id_Mascota_Historia', model: 'Mascota', select: 'Nombre_Mascota Tipo_Mascota', populate: {path: 'Id_Usuario', model: 'User', select: "Nombre_Usuario Apellido_Usuario"} });
+        const historia = await this.historiaModel.find()
+            .populate({ 
+                path: 'Id_Mascota_Historia',
+                model: 'Mascota', 
+                select: 'Nombre_Mascota Tipo_Mascota', 
+                populate: {
+                    path: 'Id_Usuario', 
+                    model: 'User', 
+                    select: "Nombre_Usuario Apellido_Usuario"} });
+
+        return historia;    
     }
 
     //crearHistoriaClinica

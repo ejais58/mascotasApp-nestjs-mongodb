@@ -153,12 +153,16 @@ export class PsicologiaService {
 
     //verInfoMascotas
     async infoDeMascota(id: string){
-        return this.historiaDao.historiaMascota(id);
+       const historia = await this.historiaDao.historiaMascota(id);
+       if (historia.length === 0){
+            return "No se encontro Historia Clinica de la mascota"
+       }
+       return historia;
     }
 
     //TerminarCita
     async terminarCita(historia: CreateHistoriaDto){
-        const {Id_Historia, Id_Mascota_Historia} = historia
+        let {Id_Historia} = historia
         const findEstadoCita = await this.turnoDao.estadoTurno(Id_Historia);
         console.log(findEstadoCita)
 
@@ -171,6 +175,7 @@ export class PsicologiaService {
         await this.turnoDao.finalizarTurno(Id_Historia);
         
         //cargar resultados a historia clinica
+        historia.Id_Mascota_Historia = findEstadoCita.Id_Mascota_Turno;
         const fechaHoy = new Date();
         historia.Fecha_Historia = fechaHoy;
         return this.historiaDao.crearHistoria(historia);

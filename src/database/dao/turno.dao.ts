@@ -70,7 +70,7 @@ export class TurnoDao{
 
     //estadoDeTurno
     async estadoTurno(id: string){
-        const estado = await this.turnoModel.find({_id: id, Estado_Turno: 'Pendiente'})
+        const estado = await this.turnoModel.findOne({_id: id, Estado_Turno: 'Pendiente'})
         return estado;
     }
 }
