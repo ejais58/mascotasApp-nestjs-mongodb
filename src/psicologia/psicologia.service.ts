@@ -5,6 +5,7 @@ import { TurnoDao } from '../database/dao/turno.dao';
 import { BuscarTurnoDto, RegistrarTurnoDto } from './dto/registrar-turno.dto';
 import { HistoriaDao } from '../database/dao/historiaclinica.dao';
 import { CreateHistoriaDto } from './dto/create-historia.dto';
+import { citasPsicoDto } from './dto/citas-psico.dto';
 
 
 @Injectable()
@@ -158,6 +159,11 @@ export class PsicologiaService {
             return "No se encontro Historia Clinica de la mascota"
        }
        return historia;
+    }
+
+    //verCitas
+    async verCitas(cita: citasPsicoDto){
+        return this.turnoDao.verCitasPsicologo(cita);
     }
 
     //TerminarCita

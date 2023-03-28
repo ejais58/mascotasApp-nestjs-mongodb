@@ -1,8 +1,9 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Patch } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Turno, TurnoDocument } from '../../psicologia/schema/turno.schema';
 import { Model } from 'mongoose';
 import { RegistrarTurnoDto } from '../../psicologia/dto/registrar-turno.dto';
+import { citasPsicoDto } from '../../psicologia/dto/citas-psico.dto';
 
 
 
@@ -72,5 +73,23 @@ export class TurnoDao{
     async estadoTurno(id: string){
         const estado = await this.turnoModel.findOne({_id: id, Estado_Turno: 'Pendiente'})
         return estado;
+    }
+
+    //citasPsicologo
+    async verCitasPsicologo(cita: citasPsicoDto){
+        let {Fecha} = cita;
+        let fechaInicio = new Date(Fecha)
+        let fechaInicioUTC = new Date(fechaInicio.getUTCFullYear(), fechaInicio.getUTCMonth(), fechaInicio.getUTCDate());
+        return this.turnoModel.find({
+            Id_Psicologo_Turno: cita.Id_Psicologo, 
+            Fecha_Inicio_Turno: {
+                $gte: fechaInicioUTC,
+                $lt: new Date(fechaInicioUTC.getTime() + 24 * 60 * 60 * 1000)
+              }, 
+            Estado_Turno: 'Pendiente'})
+            .populate({
+                    path: 'Id_Mascota_Turno', 
+                    model: 'Mascota', 
+                    select: 'Nombre_Mascota Tipo_Mascota'});
     }
 }
