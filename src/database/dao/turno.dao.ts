@@ -78,13 +78,12 @@ export class TurnoDao{
     //citasPsicologo
     async verCitasPsicologo(cita: citasPsicoDto){
         let {Fecha} = cita;
-        let fechaInicio = new Date(Fecha)
-        let fechaInicioUTC = new Date(fechaInicio.getUTCFullYear(), fechaInicio.getUTCMonth(), fechaInicio.getUTCDate());
+        let fechaInicio = new Date(Fecha);
         return this.turnoModel.find({
             Id_Psicologo_Turno: cita.Id_Psicologo, 
             Fecha_Inicio_Turno: {
-                $gte: fechaInicioUTC,
-                $lt: new Date(fechaInicioUTC.getTime() + 24 * 60 * 60 * 1000)
+                $gte: fechaInicio,
+                $lt: new Date(fechaInicio.getTime() + 24 * 60 * 60 * 1000)
               }, 
             Estado_Turno: 'Pendiente'})
             .populate({
