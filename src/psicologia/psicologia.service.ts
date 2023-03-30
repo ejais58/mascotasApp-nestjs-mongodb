@@ -6,6 +6,7 @@ import { BuscarTurnoDto, RegistrarTurnoDto } from './dto/registrar-turno.dto';
 import { HistoriaDao } from '../database/dao/historiaclinica.dao';
 import { CreateHistoriaDto } from './dto/create-historia.dto';
 import { citasPsicoDto } from './dto/citas-psico.dto';
+import { User } from '../users/schema/user.schema';
 
 
 @Injectable()
@@ -81,7 +82,7 @@ export class PsicologiaService {
     }
 
     //registrarTurno
-    async registrarTurno(newRegistro: RegistrarTurnoDto){
+    async registrarTurno(newRegistro: RegistrarTurnoDto, payloadId: string){
         let {Id_Psicologo_Turno, Id_Mascota_Turno, Fecha_Inicio_Turno} = newRegistro
         
 
@@ -97,9 +98,9 @@ export class PsicologiaService {
         const findMascota = await this.mascotaDao.findMascotaById(Id_Mascota_Turno)
 
         //buscamos si es su dueño
-        // if (findMascota.Id_Usuario !== payloadId){
-        //     throw new HttpException('No es su dueño', 403);
-        // }
+        if (findMascota.Id_Usuario.toString() !== payloadId){
+            throw new HttpException('No es su dueño', 403);
+        }
 
         if (findMascota.Tipo_Mascota === 'Perro'){
 
