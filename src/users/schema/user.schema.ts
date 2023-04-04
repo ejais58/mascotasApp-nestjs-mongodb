@@ -7,25 +7,25 @@ export type UsersDocument = HydratedDocument<User>
 @Schema()
 export class User{
 
-    @Prop()
+    @Prop({required: true})
     Dni_Usuario: number
 
-    @Prop()
+    @Prop({required: true})
     Nombre_Usuario: string
 
-    @Prop()
+    @Prop({required: true})
     Apellido_Usuario: string
 
-    @Prop()
+    @Prop({required: true})
     Telefono_Usuario: string
 
-    @Prop()
+    @Prop({required: true})
     Email_Usuario: string
 
-    @Prop()
+    @Prop({required: true})
     Pass_Usuario: string
 
-    @Prop()
+    @Prop({required: true})
     Rol_Usuario: string
   
 }

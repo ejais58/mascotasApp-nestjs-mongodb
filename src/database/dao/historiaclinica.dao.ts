@@ -10,7 +10,7 @@ export class HistoriaDao{
 
     //infoMascota
     async historiaMascota(id: string){
-        const historia = await this.historiaModel.find()
+        const historia = await this.historiaModel.find({Id_Mascota_Historia: id})
             .populate({ 
                 path: 'Id_Mascota_Historia',
                 model: 'Mascota', 

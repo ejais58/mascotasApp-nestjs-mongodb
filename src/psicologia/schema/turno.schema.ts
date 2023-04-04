@@ -8,19 +8,19 @@ export type TurnoDocument = HydratedDocument<Turno>
 @Schema()
 export class Turno{
 
-    @Prop({type: mongoose.Schema.Types.ObjectId, ref: "User" })
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref: "User", required: true })
     Id_Psicologo_Turno: User
 
-    @Prop({type: mongoose.Schema.Types.ObjectId, ref: "Mascota" })
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref: "Mascota", required: true })
     Id_Mascota_Turno: Mascota
     
-    @Prop()
+    @Prop({required: true})
     Fecha_Inicio_Turno: Date
 
-    @Prop()
+    @Prop({required: true})
     Fecha_Fin_Turno: Date
 
-    @Prop()
+    @Prop({required: true})
     Estado_Turno: string
 
 }

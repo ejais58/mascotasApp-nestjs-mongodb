@@ -7,13 +7,13 @@ export type MascotasDocument = HydratedDocument<Mascota>
 @Schema()
 export class Mascota{
 
-    @Prop()
+    @Prop({required: true})
     Nombre_Mascota: string
 
-    @Prop()
+    @Prop({required: true})
     Tipo_Mascota: string
 
-    @Prop({type: mongoose.Schema.Types.ObjectId, ref: "User" })
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref: "User", required: true })
     Id_Usuario: User
   
 }

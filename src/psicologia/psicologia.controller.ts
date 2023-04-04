@@ -66,9 +66,6 @@ export class PsicologiaController {
         const decoded = jwt.verify(req.headers.authorization.split(' ')[1], 'jwtConstants.secret');
         const payload = decoded as JwtPayload;
         
-        if (payload.id !== id){
-            throw new HttpException('Forbidden', 403);
-        }
         return this.psicologiaService.cancelarCita(id);
     }
 
@@ -78,9 +75,9 @@ export class PsicologiaController {
         const decoded = jwt.verify(req.headers.authorization.split(' ')[1], 'jwtConstants.secret');
         const payload = decoded as JwtPayload;
         
-        if (payload.id !== id){
-            throw new HttpException('Forbidden', 403);
-        }
+        // if (payload.id !== id){
+        //     throw new HttpException('Forbidden', 403);
+        // }
         return this.psicologiaService.infoDeMascota(id);
     }
 

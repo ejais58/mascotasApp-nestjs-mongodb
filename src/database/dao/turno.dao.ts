@@ -59,6 +59,11 @@ export class TurnoDao{
         
     }
 
+    //buscarTurno
+    async findTurno(id: string){
+        const turno = await this.turnoModel.findOne({_id: id})
+        return turno;
+    }
     //cancelarTurno
     async cancelarTurno(id: string){
         await this.turnoModel.findOneAndUpdate({_id: id},{ Estado_Turno: 'Cancelado'});
