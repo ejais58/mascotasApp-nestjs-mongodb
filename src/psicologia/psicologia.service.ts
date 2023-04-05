@@ -148,18 +148,38 @@ export class PsicologiaService {
     }
 
     //cancelarCita
-    async cancelarCita(id: string){
+    async cancelarCita(id: string, payloadId: string){
+        //buscar turno
+        const turno = await this.turnoDao.findTurno(id);
+        const idMascota = turno.Id_Mascota_Turno.toString();
+
+        //buscar mascota
+        const findMascota = await this.mascotaDao.findMascotaById(idMascota);
+
+        //valida usuario
+        if(findMascota.Id_Usuario.toString() !== payloadId){
+            throw new HttpException('No es su dueño', 403);
+        }
+
         await this.turnoDao.cancelarTurno(id);
         return 'Turno cancelado';
     }
 
     //verInfoMascotas
-    async infoDeMascota(id: string){
-       const historia = await this.historiaDao.historiaMascota(id);
-       if (historia.length === 0){
+    async infoDeMascota(id: string, payloadId: string){
+
+        const findMascota = await this.mascotaDao.findMascotaById(id);
+
+        //validar usuario
+        if(findMascota.Id_Usuario.toString() !== payloadId){
+            throw new HttpException('No es su dueño', 403);
+        }
+        
+        const historia = await this.historiaDao.historiaMascota(id);
+        if (historia.length === 0){
             return "No se encontro Historia Clinica de la mascota"
-       }
-       return historia;
+        }
+        return historia;
     }
 
     //verCitas
