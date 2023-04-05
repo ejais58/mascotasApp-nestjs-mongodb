@@ -155,9 +155,9 @@ export class PsicologiaService {
 
         //buscar mascota
         const findMascota = await this.mascotaDao.findMascotaById(idMascota);
-
+        const idUsuario = findMascota.Id_Usuario.toString();
         //valida usuario
-        if(findMascota.Id_Usuario.toString() !== payloadId){
+        if(idUsuario !== payloadId){
             throw new HttpException('No es su dueño', 403);
         }
 
@@ -174,7 +174,7 @@ export class PsicologiaService {
         if(findMascota.Id_Usuario.toString() !== payloadId){
             throw new HttpException('No es su dueño', 403);
         }
-        
+
         const historia = await this.historiaDao.historiaMascota(id);
         if (historia.length === 0){
             return "No se encontro Historia Clinica de la mascota"
