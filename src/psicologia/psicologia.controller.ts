@@ -6,11 +6,18 @@ import { citasPsicoDto } from './dto/citas-psico.dto';
 import { JwtAuthGuard } from '../users/jwt/jwt-auth.guard';
 import * as jwt from 'jsonwebtoken';
 import { JwtPayload } from '../users/jwt/interfaces/jwtPayload';
+import { NumberConversionWrapper } from '../providers/number-conversion-wrapper';
 
 
 @Controller('psicologia')
 export class PsicologiaController {
-    constructor(private psicologiaService: PsicologiaService){}
+    constructor(private psicologiaService: PsicologiaService, private numberConversionWrapper: NumberConversionWrapper){}
+
+    //soap api
+    @Get('numbertowords/:num')
+    async numberToWords(@Param('num') num: number): Promise<string> {
+        return await this.numberConversionWrapper.numberToWords(num);
+    }
 
     @UseGuards(JwtAuthGuard)
     @Get()
