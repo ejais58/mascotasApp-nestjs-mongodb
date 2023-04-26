@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 
 import { User } from './schema/user.schema';
 import { LoginUserDto } from './dto/login-user.dto';
+import { LoginOutput } from './interfaces/login-output';
 
 
 @Controller('users')
@@ -17,7 +18,7 @@ export class UsersController {
     }
 
     @Post('login')
-    postMascota(@Body() login: LoginUserDto){
+    postLogin(@Body() login: LoginUserDto){
         return this.usersService.login(login);
     }
 }

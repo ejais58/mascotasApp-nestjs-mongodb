@@ -5,6 +5,8 @@ import * as argon2 from 'argon2';
 import { UserDao } from '../database/dao/user.dao';
 import { LoginUserDto } from './dto/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
+import { ObjectId } from 'bson';
+import mongoose from 'mongoose';
 
 @Injectable()
 export class UsersService {
@@ -38,7 +40,7 @@ export class UsersService {
         } 
 
         //generar jwt
-        const payload = {id: findUser._id, nombre: findUser.Nombre_Usuario, rol: findUser.Rol_Usuario}
+        const payload = {id: new mongoose.Types.ObjectId(findUser._id), nombre: findUser.Nombre_Usuario, rol: findUser.Rol_Usuario}
         const token = this.jwtService.sign(payload)
         const data = {token, payload}
         return data;
